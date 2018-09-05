@@ -2,7 +2,7 @@
 
 a reusable D3.js scatterplot plugin that supports easy customization
 
-this plugin is implemented as a closure that support [method chaining](https://en.wikipedia.org/wiki/Method_chaining)
+this plugin is implemented as a closure that supports [method chaining](https://en.wikipedia.org/wiki/Method_chaining)
 
 [why implement the plugin as a closure (by Mike Bostock)](https://bost.ocks.org/mike/chart/)
 
@@ -90,8 +90,8 @@ let width = chart.width() /* width = 800 */
     - default = d => d.label
 - rValueMapper: [Function]
     - get/set the access method to point radius
-    - default = _ => 1
-    - by default radius = 1 for all the points
+    - default = _ => 3
+    - by default radius = 3 for all the points
 - strokeValueMapper: [Function]
     - get/set the access method to point stroke color
     - default = _ => "black"
