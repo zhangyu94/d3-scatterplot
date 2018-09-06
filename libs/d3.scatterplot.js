@@ -52,7 +52,9 @@
                 y.domain(d3.extent(data, yValueMapper)).nice()
 
                 const colorValues = [...new Set(data.map(ele => colorValueMapper(ele)))].sort((ele1, ele2) => ele1 - ele2)
+                
                 let color = (function (colorValues) {
+                    /*
                     const nColors = Math.min(20, colorValues.length);
                     const scaler = d3.scaleLinear()
                         .domain([1, nColors + 1])
@@ -60,9 +62,11 @@
                     let colors = []
                     //let colors = ['grey']
                     for (let i = 1; i <= nColors; ++i) colors.push(d3.interpolateRainbow(scaler(i)))
+                    */
+                    let colors = d3.schemeCategory10
                     return d3.scaleOrdinal(colors).domain(colorValues)
                 })(colorValues)
-
+                
                 let svg = d3.select(this)
                     .attr("width", width)
                     .attr("height", height)
@@ -95,13 +99,13 @@
                     .enter()
                     .append("text")
                     .attr("class", "x label")
-                    .attr("dy", "1.5em")
-                    .attr("dx", "2.5em")
+                    .attr("dy", "2.5em")
+                    .attr("dx", "0em")
                     .attr("x", innerWidth)
                     .attr("fill", "black")
-                    .text(xLabel)
-                enterXAxisG.selectAll("text")
                     .style("font", "10px sans-serif")
+                g.selectAll(".x.axis").selectAll("text")
+                    .text(xLabel)
 
                 // draw y axis
                 let yAxis = d3.axisLeft(y)
@@ -123,9 +127,9 @@
                     .attr("transform", "rotate(-90)")
                     .attr("dy", "-3.5em")
                     .attr("fill", "black")
-                    .text(yLabel)
-                enterYAxisG.selectAll("text")
                     .style("font", "10px sans-serif")
+                g.selectAll(".y.axis").selectAll("text")
+                    .text(yLabel)
 
                 // draw dots
                 let dots = g.selectAll(".dot")
@@ -145,19 +149,24 @@
                 if (drawLegend) {
                     let legend = svg.selectAll(".legend")
                         .data(color.domain())
-                        .enter().append("g")
+                    let legendG = legend.enter().append("g")
                         .attr("class", "legend")
-                        .attr("transform", (_, i) => "translate(0," + i * 20 + ")");
-                    legend.append("rect")
-                        .attr("x", width - 18 - margin.left)
+                    legendG.append("rect")
                         .attr("width", 18)
                         .attr("height", 18)
-                        .style("fill", color);
-                    legend.append("text")
-                        .attr("x", width - 24 - margin.left)
+                    legendG.append("text")
                         .attr("y", 9)
                         .attr("dy", ".35em")
                         .style("text-anchor", "end")
+                    legend.exit().remove()
+                        
+                    legend = svg.selectAll('.legend')
+                        .attr("transform", (_, i) => "translate(0," + i * 20 + ")")
+                    legend.select("rect")
+                        .attr("x", width - margin.left)
+                        .style("fill", color);
+                    legend.select("text")
+                        .attr("x", width - 6 - margin.left)
                         .text(d => d);
                 }
 
