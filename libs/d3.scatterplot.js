@@ -173,11 +173,9 @@
                 if (enableBrush) {
                     let zoom = function () {
                         let t = g.transition().duration(750);
-                        //let t = scatter.transition().duration(750);
                         svg.select(".x.axis").transition(t).call(xAxis);
                         svg.select(".y.axis").transition(t).call(yAxis);
                         g.selectAll(".dot").transition(t)
-                            //scatter.selectAll(".dot").transition(t)
                             .attr("cx", d => x(xValueMapper(d)))
                             .attr("cy", d => y(yValueMapper(d)));
                     }
@@ -193,7 +191,7 @@
                         } else {
                             x.domain([extent[0][0], extent[1][0]].map(x.invert, x));
                             y.domain([extent[1][1], extent[0][1]].map(y.invert, y));
-                            g.select(".brush").call(brush.move, null);
+                            g.call(brush.move, null);
                         }
                         zoom()
                     }
@@ -204,11 +202,7 @@
                             [innerWidth, innerHeight]
                         ])
                         .on("end", brushEnded)
-                    g.selectAll(".brush")
-                        .data([null])
-                        .enter().append("g")
-                        .attr("class", "brush")
-                    g.select(".brush").call(brush)
+                    g.call(brush)
                 }
             })
         }
